@@ -4,10 +4,14 @@ import threading
 import time
 import pyperclip
 import traceback
+import daemon
+import sys
 
 perip=open('config.ini').readline().strip()
 print perip
 port=9999
+#important ! if not set ,daemon can't call paste copy correct
+pyperclip.set_clipboard('xsel')
 clipdata=pyperclip.paste()
 
 
@@ -62,7 +66,8 @@ def test():
         print "running"
         time.sleep(10)
 
-if __name__ == "__main__":
+def main():
+    time.sleep(1)
     threads = []
     t1 = threading.Thread(target=clipbord_send)
     t2 = threading.Thread(target=clipbord_recv_server)
@@ -71,7 +76,13 @@ if __name__ == "__main__":
     for t in threads:
         t.setDaemon(True)
         t.start()
-
     while True:
         time.sleep(1)
-        pass
+
+if __name__ == "__main__":
+    if len(sys.argv) == 2 and sys.argv[1] == "debug":
+        main()
+    else:
+        print "start as daemon.."
+        with daemon.DaemonContext():
+            main()
