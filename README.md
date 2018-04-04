@@ -1,7 +1,7 @@
 实现两台PC直接共享剪贴板，默认使用守护进程运行
 
 依赖：
-sudo apt-get install xsel \<br>
+sudo apt-get install xsel <br\> 
 pip install python-daemon
 
 config.ini中填入要共享主机的IP地址，端口默认使用9999
